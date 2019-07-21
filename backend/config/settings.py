@@ -14,6 +14,8 @@ ROOT_DIR = environ.Path(__file__) - 2
 
 # Load operating system environment variables and then prepare to use them
 env = environ.Env()
+environ.Env.read_env()
+
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -27,14 +29,13 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    
     'rest_framework',
-    
     'django_extensions',
 ]
 
 LOCAL_APPS = [
     'apps.users',
+    'apps.git_providers',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -56,7 +57,7 @@ MIDDLEWARE = [
 # DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = env.bool('DEBUG')
+DEBUG = env.bool('DEBUG', default=True)
 SECRET_KEY = env.str('SECRET_KEY')
 
 # DOMAINS
@@ -227,3 +228,5 @@ REST_FRAMEWORK = {
 
 CELERY_BROKER_URL = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'redis://redis:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
